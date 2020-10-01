@@ -1,0 +1,250 @@
+{
+  "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "cover",
+    "action": {
+      "type": "uri",
+      "label": "Line",
+      "uri": "https://linecorp.com/"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [{
+        "type": "text",
+        "text": "鬧咖啡 NOW coffee",
+        "weight": "bold",
+        "size": "xxl",
+        "align": "center",
+        "wrap": true,
+        "contents": [
+
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "lg",
+        "contents": [{
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [{
+                "type": "text",
+                "text": "地址",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "100台北市中正區延平南路58號",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "wrap": true,
+                "contents": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [{
+                "type": "text",
+                "text": "時間",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "11:30 - 22:00",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "wrap": true,
+                "contents": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [{
+                "type": "text",
+                "text": "公休",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "無",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "contents": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [{
+                "type": "text",
+                "text": "風格",
+                "weight": "regular",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "wrap": true,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "工業風",
+                "weight": "regular",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "wrap": true,
+                "contents": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [{
+                "type": "text",
+                "text": "插座",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "wrap": true,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "多",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "wrap": true,
+                "contents": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [{
+                "type": "text",
+                "text": "空間",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "適中",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "contents": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [{
+                "type": "text",
+                "text": "評價",
+                "size": "md",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": [
+
+                ]
+              },
+              {
+                "type": "text",
+                "text": "椅子超好坐，傢俱有挑過有風格，咖啡偏小杯",
+                "size": "md",
+                "color": "#666666",
+                "flex": 5,
+                "wrap": true,
+                "contents": [
+
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [{
+        "type": "spacer",
+        "size": "xl"
+      },
+      {
+        "type": "button",
+        "style": "primary",
+        "action": {
+          "type": "uri",
+          "label": "地圖",
+          "uri": ""
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "action": {
+          "type": "postback",
+          "label": "移除最愛",
+          "data": ""
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,241 @@
+{
+    "type": "bubble",
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [{
+                "type": "text",
+                "text": "",
+                "weight": "bold",
+                "size": "xxl",
+                "align": "center",
+                "wrap": true,
+                "contents": [
+
+                ]
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "lg",
+                "contents": [{
+                        "type": "box",
+                        "layout": "baseline",
+                        "spacing": "sm",
+                        "contents": [{
+                                "type": "text",
+                                "text": "地址",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "spacing": "sm",
+                        "contents": [{
+                                "type": "text",
+                                "text": "時間",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [{
+                                "type": "text",
+                                "text": "公休",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [{
+                                "type": "text",
+                                "text": "風格",
+                                "weight": "regular",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "weight": "regular",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [{
+                                "type": "text",
+                                "text": "插座",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [{
+                                "type": "text",
+                                "text": "空間",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [{
+                                "type": "text",
+                                "text": "評價",
+                                "size": "md",
+                                "color": "#AAAAAA",
+                                "flex": 1,
+                                "contents": [
+
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "",
+                                "size": "md",
+                                "color": "#666666",
+                                "flex": 5,
+                                "wrap": true,
+                                "contents": [
+
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "md",
+        "contents": [{
+            "type": "button",
+            "style": "primary",
+            "action": {
+                "type": "uri",
+                "label": "地圖",
+                "uri": ""
+            }
+        }, {
+            "type": "button",
+            "style": "secondary",
+            "action": {
+                "type": "uri",
+                "label": "Facebook",
+                "uri": ""
+            }
+        }, {
+            "type": "button",
+            "style": "secondary",
+            "action": {
+                "type": "postback",
+                "label": "加入最愛",
+                "data": ""
+            }
+        }]
+    }
+}
