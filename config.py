@@ -32,4 +32,4 @@ class DevConfig(Config):
     CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET')
     MONGO_DB_URI = os.environ.get('DB_URI')
     DB_NAME = 'devdb'
-    COLLECTION = 'coffeeshops'
+    COLLECTIONS = ('coffeeshops', 'favorites')

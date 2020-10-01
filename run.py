@@ -11,9 +11,9 @@ CHANNEL_SECRET = app.config['CHANNEL_SECRET']
 
 MONGO_DB_URI = app.config['MONGO_DB_URI']
 DB_NAME = app.config['DB_NAME']
-COLLECTION = app.config['COLLECTION']
+COLLECTIONS = app.config['COLLECTIONS']
 
-mongodb = MongoDb(MONGO_DB_URI, DB_NAME, COLLECTION)
+mongodb = MongoDb(MONGO_DB_URI, DB_NAME, COLLECTIONS)
 handler = Handler(CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET, mongodb)
 
 
