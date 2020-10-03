@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 
 class MongoDb():
@@ -18,24 +19,30 @@ class MongoDb():
         shops = db[self.COLLECTIONS[0]]
         shops.insert_many(data)
 
-    def get_data(self):
+    def get_data(self, from_table, *args):
         db = self.client[self.DB_NAME]
-        shops = db[self.COLLECTIONS[0]]
-        return [shop for shop in shops.find()]
+        if from_table == 'shops':
+            shops = db[self.COLLECTIONS[0]]
+            return [shop for shop in shops.find()]
+        else:
+            favorites = db[self.COLLECTIONS[1]]
+            for query in args:
+                result = favorites.find(query).count() > 0
+            return result
 
-    def get_data_by_user_id(self, userId):
+    def get_data_by_user_id(self, user_id):
         db = self.client[self.DB_NAME]
-        shops = db[self.COLLECTIONS[0]]
         favorites = db[self.COLLECTIONS[1]]
-        favorite_shops = []
-        favorite_shop_ids = [favorite for favorite in favorites.find(userId)]
-        for favorite_shop_id in favorite_shop_ids:
-            favorite_shop = shops.find_one(favorite_shop_id.shopId)
-            favorite_shop['favorite_id'] = favorites.objectId
-            favorite_shops.append(favorite_shop)
+        favorite_shops = [
+            favorite for favorite in favorites.find({'user_id': user_id})]
         return favorite_shops
 
     def delete_data_in_favorites(self, favorite_id):
         db = self.client[self.DB_NAME]
         favorites = db[self.COLLECTIONS[1]]
-        favorites.delete_one(favorite_id)
+        result = favorites.delete_one(
+            {"_id": ObjectId(favorite_id)}).deleted_count
+        if result == 1:
+            return True
+        else:
+            return False

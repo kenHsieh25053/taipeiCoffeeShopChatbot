@@ -8,14 +8,13 @@ from linebot.models import (
     TextMessage, TextSendMessage, FlexSendMessage
 )
 import json
-from bson.objectid import ObjectId
 from copy import deepcopy
 from shop import Shop
 
-shop = Shop()
-
 
 class Handler:
+
+    shop = Shop()
 
     def __init__(self, CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET, mongodb):
         self.CHANNEL_ACCESS_TOKEN = CHANNEL_ACCESS_TOKEN
@@ -34,75 +33,123 @@ class Handler:
     def __handle_message(self, events):
         line_bot_api = LineBotApi(self.CHANNEL_ACCESS_TOKEN)
         for event in events:
-            if event.message.type == 'location':
-                nearby_shops = shop.get_nearby_shops_by_location(
-                    event, self.mongodb)
+            if event.type == 'message':
+                if event.message.type == 'location':
+                    nearby_shops = shop.get_nearby_shops_by_location(
+                        event, self.mongodb)
 
-                if len(nearby_shops) < 1:
+                    if len(nearby_shops) == 0:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text="尚未探索這區～"))
+                        return
+
+                    with open('./templates/flexmessage.json') as file:
+                        flex_message_template = json.load(file)
+
+                    flex_messages = {
+                        "type": "carousel",
+                        "contents": [deepcopy(self.__flex_message(nearby_shop, flex_message_template)) for nearby_shop in nearby_shops]
+                    }
+
+                    line_bot_api.reply_message(
+                        event.reply_token, FlexSendMessage(alt_text='店家資訊', contents=flex_messages))
+                elif event.message.text == 'favorites':
+                    favorite_shops = shop.get_favorites(event, self.mongodb)
+
+                    with open('./templates/favorites.json') as file:
+                        favorites_template = json.load(file)
+
                     line_bot_api.reply_message(
                         event.reply_token,
-                        TextSendMessage(text="尚未探索這區～"))
-                    return
-
-                with open('flexmessage.json') as file:
-                    template = json.load(file)
-
-                flex_messages = {
-                    "type": "carousel",
-                    "contents": [deepcopy(self.__flex_message(nearby_shop, template)) for nearby_shop in nearby_shops]
-                }
-
-                line_bot_api.reply_message(
-                    event.reply_token, FlexSendMessage(alt_text='店家資訊', contents=flex_messages))
-            elif event.message.type == 'postback':
-                if event.message.label == '加入最愛':
-                    shop.add_into_my_favorites(event, self.mongodb)
-                    line_bot_api.reply_message(
-                        event.reply_token, TextSendMessage(text="已加入!"))
+                        FlexSendMessage(alt_text='最愛清單', contents=self.__favorites_flex_message(
+                            favorite_shops, favorites_template))
+                    )
                 else:
-                    shop.delete_favorite_shop(event, self.mongodb)
                     line_bot_api.reply_message(
                         event.reply_token,
-                        TextSendMessage(text="已移除!"))
-            elif event.message.text == '我的最愛':
-                favorite_shops = shop.get_favorites(event, self.mongodb)
-                favorites_flex_messages = map(
-                    self.__favorites_flex_message(template), favorite_shops)
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    FlexSendMessage(json.dumps(favorites_flex_messages))
-                )
+                        TextSendMessage(text="對不起，我不了解您的問題"))
             else:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text="don't get you!"))
+                # postback actions
+                action = event.postback.data.split('_')[0]
+                if action == 'favorite':
+                    favorite_shops = shop.get_favorites(
+                        event, self.mongodb)
+                    if len(favorite_shops) > 9:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text="最愛店家已達十筆，請先刪除店家再進行新增！"))
+                        return
+                    result = shop.add_into_my_favorites(event, self.mongodb)
+                    if result:
+                        line_bot_api.reply_message(
+                            event.reply_token, TextSendMessage(text="加入成功"))
+                    else:
+                        line_bot_api.reply_message(
+                            event.reply_token, TextSendMessage(text="已加入"))
+                elif action == 'deleteshop':
+                    favorite_shops = shop.get_favorites(event, self.mongodb)
 
-    def __flex_message(self, nearby_shop, template):
-        template['body']['contents'][0]['text'] = nearby_shop['shop_name']
-        template['body']['contents'][1]['contents'][0]['contents'][1]['text'] = nearby_shop['address']
-        template['body']['contents'][1]['contents'][1]['contents'][1]['text'] = nearby_shop['open_hour']
-        template['body']['contents'][1]['contents'][2]['contents'][1]['text'] = nearby_shop['close_date']
-        template['body']['contents'][1]['contents'][3]['contents'][1]['text'] = nearby_shop['style']
-        template['body']['contents'][1]['contents'][4]['contents'][1]['text'] = nearby_shop['plug_number']
-        template['body']['contents'][1]['contents'][5]['contents'][1]['text'] = nearby_shop['space']
-        template['body']['contents'][1]['contents'][6]['contents'][1]['text'] = nearby_shop['comment']
-        template['footer']['contents'][0]['action']['uri'] = nearby_shop['map_url']
-        template['footer']['contents'][1]['action']['uri'] = nearby_shop['facebook']
-        template['footer']['contents'][2]['action']['data'] = str(
-            nearby_shop['_id'])
+                    with open('./templates/favoritesComfirmMessage.json') as file:
+                        favorites_confirm_message_template = json.load(file)
 
-        return template
+                    favorites_confirm_messages = {
+                        "type": "carousel",
+                        "contents": [deepcopy(self.__favorites_confirm_flex_message(favorite_shop, favorites_confirm_message_template)) for favorite_shop in favorite_shops]
+                    }
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        FlexSendMessage(alt_text='確認刪除清單',
+                                        contents=favorites_confirm_messages)
+                    )
+                else:
+                    result = shop.delete_favorite_shop(event, self.mongodb)
+                    if result:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text="已移除!"))
+                    else:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text="找不到結果"))
 
-    def __favorites_flex_message(self, shop, favorites, template):
-        template.body.contents[0].text = favorites.favoritesName
-        template.body.contents[1].contents[1].text = favorites.address
-        template.body.contents[2].contents[1].text = favorites.openHour
-        template.body.contents[3].contents[1].text = favorites.closeDate
-        template.body.contents[4].contents[1].text = favorites.style
-        template.body.contents[5].contents[1].text = favorites.plugNumber
-        template.body.contents[6].contents[1].text = favorites.space
-        template.body.contents[7].contents[1].text = favorites.comment
-        template.footer.contents[1].action.uri = shop.map_url
-        template.footer.contents[2].action.data = favorites.favorite_id
+    def __flex_message(self, nearby_shop, flex_message_template):
+        flex_message_template['body']['contents'][0]['text'] = nearby_shop['shop_name']
+        flex_message_template['body']['contents'][1]['contents'][0]['contents'][1]['text'] = nearby_shop['address']
+        flex_message_template['body']['contents'][1]['contents'][1]['contents'][1]['text'] = nearby_shop['open_hour']
+        flex_message_template['body']['contents'][1]['contents'][2]['contents'][1]['text'] = nearby_shop['close_date']
+        flex_message_template['body']['contents'][1]['contents'][3]['contents'][1]['text'] = nearby_shop['style']
+        flex_message_template['body']['contents'][1]['contents'][4]['contents'][1]['text'] = nearby_shop['plug_number']
+        flex_message_template['body']['contents'][1]['contents'][5]['contents'][1]['text'] = nearby_shop['space']
+        flex_message_template['body']['contents'][1]['contents'][6]['contents'][1]['text'] = nearby_shop['comment']
+        flex_message_template['footer']['contents'][0]['action']['uri'] = nearby_shop['map_url']
+        flex_message_template['footer']['contents'][1]['action']['uri'] = nearby_shop['facebook']
+        flex_message_template['footer']['contents'][2]['action']['data'] = 'favorite' + \
+            '_' + nearby_shop['shop_name'] + '_' + str(nearby_shop['_id'])
 
-        return template
+        return flex_message_template
+
+    # todo
+    def __favorites_flex_message(self, favorite_shops, favorites_template):
+        for favorite_shop in favorite_shops:
+            flex_message = {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [{
+                    "type": "text",
+                    "text": favorite_shop['shop_name'],
+                    "weight": "regular",
+                    "size": "sm",
+                    "contents": []
+                }]
+            }
+            favorites_template['body']['contents'].append(flex_message)
+            favorites_template['footer']['contents'][0]['action']['data'] = 'deleteshop'
+
+        return favorites_template
+
+    def __favorites_confirm_flex_message(self, favorite_shop, favorites_confirm_message_template):
+        favorites_confirm_message_template['body']['contents'][0]['text'] = favorite_shop['shop_name']
+        favorites_confirm_message_template['footer']['contents'][0]['action']['data'] = str(
+            favorite_shop['_id'])
+        return favorites_confirm_message_template
