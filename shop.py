@@ -25,11 +25,11 @@ class Shop():
         return shop
 
     def get_shops(self, mongodb):
-        return mongodb.get_data()
+        return mongodb.get_data('shops')
 
     def get_nearby_shops_by_location(self, event, mongodb):
         nearby_locations = []
-        shops = mongodb.get_data()
+        shops = mongodb.get_data('shops')
         for shop in shops:
             shop_with_distance = self.__get_distance_between_two_locations(
                 event, shop)
@@ -42,16 +42,24 @@ class Shop():
         return sorted_nearby_locations[:10]
 
     def add_into_my_favorites(self, event, mongodb):
-        shopId = event.postback.data
-        userId = event.sourse.userId
-        mongodb.insert_data({'userId': userId, 'shopId': shopId})
-        return 'ok'
+        shop_name = event.postback.data.split('_')[1]
+        shop_id = event.postback.data.split('_')[2]
+        user_id = event.source.user_id
+        query_statement = {
+            "$and": [{"user_id": user_id}, {"shop_id": shop_id}]}
+        is_exist = mongodb.get_data('favorites', query_statement)
+        if is_exist:
+            return False
+        else:
+            mongodb.insert_data(
+                {'user_id': user_id, 'shop_id': shop_id, 'shop_name': shop_name})
+            return True
 
     def get_favorites(self, event, mongodb):
-        userId = event.sourse.userId
-        return mongodb.get_data_by_user_id(userId)
+        user_id = event.source.user_id
+        return mongodb.get_data_by_user_id(user_id)
 
     def delete_favorite_shop(self, event, mongodb):
         favorite_id = event.postback.data
-        mongodb.delete_data_in_favorites(favorite_id)
-        return 'ok'
+        result = mongodb.delete_data_in_favorites(favorite_id)
+        return result

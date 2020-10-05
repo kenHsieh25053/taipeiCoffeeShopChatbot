@@ -2,7 +2,6 @@ from flask import Flask, request, abort
 from handler import Handler
 from db import MongoDb
 
-
 app = Flask(__name__)
 app.config.from_object('config.DevConfig')
 
