@@ -20,6 +20,7 @@ class Handler:
         self.CHANNEL_ACCESS_TOKEN = CHANNEL_ACCESS_TOKEN
         self.CHANNEL_SECRET = CHANNEL_SECRET
         self.mongodb = mongodb
+        self.shop = Shop()
 
     def callback(self, signature, body):
         parser = WebhookParser(self.CHANNEL_SECRET)
@@ -35,7 +36,7 @@ class Handler:
         for event in events:
             if event.type == 'message':
                 if event.message.type == 'location':
-                    nearby_shops = shop.get_nearby_shops_by_location(
+                    nearby_shops = self.shop.get_nearby_shops_by_location(
                         event, self.mongodb)
 
                     if len(nearby_shops) == 0:
@@ -55,7 +56,8 @@ class Handler:
                     line_bot_api.reply_message(
                         event.reply_token, FlexSendMessage(alt_text='店家資訊', contents=flex_messages))
                 elif event.message.text == 'favorites':
-                    favorite_shops = shop.get_favorites(event, self.mongodb)
+                    favorite_shops = self.shop.get_favorites(
+                        event, self.mongodb)
 
                     with open('./templates/favorites.json') as file:
                         favorites_template = json.load(file)
@@ -73,14 +75,15 @@ class Handler:
                 # postback actions
                 action = event.postback.data.split('_')[0]
                 if action == 'favorite':
-                    favorite_shops = shop.get_favorites(
+                    favorite_shops = self.shop.get_favorites(
                         event, self.mongodb)
                     if len(favorite_shops) > 9:
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text="最愛店家已達十筆，請先刪除店家再進行新增！"))
                         return
-                    result = shop.add_into_my_favorites(event, self.mongodb)
+                    result = self.shop.add_into_my_favorites(
+                        event, self.mongodb)
                     if result:
                         line_bot_api.reply_message(
                             event.reply_token, TextSendMessage(text="加入成功"))
@@ -88,7 +91,8 @@ class Handler:
                         line_bot_api.reply_message(
                             event.reply_token, TextSendMessage(text="已加入"))
                 elif action == 'deleteshop':
-                    favorite_shops = shop.get_favorites(event, self.mongodb)
+                    favorite_shops = self.shop.get_favorites(
+                        event, self.mongodb)
 
                     with open('./templates/favoritesComfirmMessage.json') as file:
                         favorites_confirm_message_template = json.load(file)
@@ -103,7 +107,8 @@ class Handler:
                                         contents=favorites_confirm_messages)
                     )
                 else:
-                    result = shop.delete_favorite_shop(event, self.mongodb)
+                    result = self.shop.delete_favorite_shop(
+                        event, self.mongodb)
                     if result:
                         line_bot_api.reply_message(
                             event.reply_token,
