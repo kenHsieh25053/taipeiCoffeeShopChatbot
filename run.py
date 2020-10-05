@@ -1,9 +1,13 @@
 from flask import Flask, request, abort
 from handler import Handler
 from db import MongoDb
+import os
 
 app = Flask(__name__)
-app.config.from_object('config.DevConfig')
+
+os.environ.setdefault('STAGE', 'config.DevConfig')
+
+app.config.from_object(os.environ['STAGE'])
 
 CHANNEL_ACCESS_TOKEN = app.config['CHANNEL_ACCESS_TOKEN']
 CHANNEL_SECRET = app.config['CHANNEL_SECRET']
@@ -30,4 +34,4 @@ def endpoint():
 
 
 if __name__ == "__main__":
-    app.run(debug=app.config['DEBUG'])
+    app.run(host=app.config['HOST'], debug=app.config['DEBUG'])

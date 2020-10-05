@@ -21,6 +21,10 @@ class ProdConfig(Config):
     DATABASE_URI = os.environ.get('PROD_DATABASE_URI')
     CHANNEL_ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
     CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET')
+    DB_NAME = os.environ.get('PRODUCTION_DB_NAME')
+    COLLECTIONS = ('coffeeshops', 'favorites')
+    MONGO_DB_URI = os.environ.get('DB_URI_PROD')
+    HOST = os.environ.get('HEROKU_HOST')
 
 
 class DevConfig(Config):
@@ -30,6 +34,7 @@ class DevConfig(Config):
     DATABASE_URI = os.environ.get('DEV_DATABASE_URI')
     CHANNEL_ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
     CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET')
-    MONGO_DB_URI = os.environ.get('DB_URI')
+    MONGO_DB_URI = os.environ.get('DB_URI_DEV')
     DB_NAME = 'devdb'
     COLLECTIONS = ('coffeeshops', 'favorites')
+    HOST = '0.0.0.0'
