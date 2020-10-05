@@ -6,15 +6,7 @@ basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, '.env'))
 
 
-class Config:
-    """Base config."""
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    SESSION_COOKIE_NAME = os.environ.get('SESSION_COOKIE_NAME')
-    CHANNEL_ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
-    CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET')
-
-
-class ProdConfig(Config):
+class ProdConfig():
     FLASK_ENV = 'production'
     DEBUG = False
     TESTING = False
@@ -28,7 +20,7 @@ class ProdConfig(Config):
     PORT = 80
 
 
-class DevConfig(Config):
+class DevConfig():
     FLASK_ENV = 'development'
     DEBUG = True
     TESTING = True
