@@ -25,6 +25,7 @@ class ProdConfig(Config):
     COLLECTIONS = ('coffeeshops', 'favorites')
     MONGO_DB_URI = os.environ.get('DB_URI_PROD')
     HOST = os.environ.get('HEROKU_HOST')
+    PORT = 80
 
 
 class DevConfig(Config):
@@ -38,3 +39,4 @@ class DevConfig(Config):
     DB_NAME = 'devdb'
     COLLECTIONS = ('coffeeshops', 'favorites')
     HOST = '0.0.0.0'
+    PORT = 5000
