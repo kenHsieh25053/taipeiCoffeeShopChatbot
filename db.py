@@ -42,7 +42,4 @@ class MongoDb():
         favorites = db[self.COLLECTIONS[1]]
         result = favorites.delete_one(
             {"_id": ObjectId(favorite_id)}).deleted_count
-        if result == 1:
-            return True
-        else:
-            return False
+        return result
