@@ -24,7 +24,7 @@ class Handler:
 
     def callback(self, signature, body):
         parser = WebhookParser(self.CHANNEL_SECRET)
-        # handle webhook body
+
         try:
             events = parser.parse(body, signature)
             self.__handle_message(events[0])
