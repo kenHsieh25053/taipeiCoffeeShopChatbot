@@ -27,38 +27,36 @@ class Handler:
         # handle webhook body
         try:
             events = parser.parse(body, signature)
-            self.__handle_message(events)
+            self.__handle_message(events[0])
         except InvalidSignatureError as e:
             print(e)
 
-    def __handle_message(self, events):
+    def __handle_message(self, event):
         line_bot_api = LineBotApi(self.CHANNEL_ACCESS_TOKEN)
-        for event in events:
-            if event.type == 'message':
-                if event.message.type == 'location':
-                    nearby_shops = self.shop.get_nearby_shops_by_location(
-                        event, self.mongodb)
+        if event.type == 'message':
+            if event.message.type == 'location':
+                nearby_shops = self.shop.get_nearby_shops_by_location(
+                    event, self.mongodb)
 
-                    if len(nearby_shops) == 0:
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text="尚未探索這區～"))
-                        return
-
+                if nearby_shops:
                     with open('./templates/flexmessage.json') as file:
                         flex_message_template = json.load(file)
-
                     flex_messages = {
                         "type": "carousel",
                         "contents": [deepcopy(self.__flex_message(nearby_shop, flex_message_template)) for nearby_shop in nearby_shops]
                     }
-
                     line_bot_api.reply_message(
                         event.reply_token, FlexSendMessage(alt_text='店家資訊', contents=flex_messages))
-                elif event.message.text == 'favorites':
-                    favorite_shops = self.shop.get_favorites(
-                        event, self.mongodb)
+                else:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="尚未探索這區～"))
 
+            elif event.message.text == 'favorites':
+                favorite_shops = self.shop.get_favorites(
+                    event, self.mongodb)
+
+                if favorite_shops:
                     with open('./templates/favorites.json') as file:
                         favorites_template = json.load(file)
 
@@ -70,53 +68,57 @@ class Handler:
                 else:
                     line_bot_api.reply_message(
                         event.reply_token,
-                        TextSendMessage(text="對不起，我不了解您的問題"))
+                        TextSendMessage(text="尚未加入我的最愛"))
             else:
-                # postback actions
-                action = event.postback.data.split('_')[0]
-                if action == 'favorite':
-                    favorite_shops = self.shop.get_favorites(
-                        event, self.mongodb)
-                    if len(favorite_shops) > 9:
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text="最愛店家已達十筆，請先刪除店家再進行新增！"))
-                        return
-                    result = self.shop.add_into_my_favorites(
-                        event, self.mongodb)
-                    if result:
-                        line_bot_api.reply_message(
-                            event.reply_token, TextSendMessage(text="加入成功"))
-                    else:
-                        line_bot_api.reply_message(
-                            event.reply_token, TextSendMessage(text="已加入"))
-                elif action == 'deleteshop':
-                    favorite_shops = self.shop.get_favorites(
-                        event, self.mongodb)
-
-                    with open('./templates/favoritesComfirmMessage.json') as file:
-                        favorites_confirm_message_template = json.load(file)
-
-                    favorites_confirm_messages = {
-                        "type": "carousel",
-                        "contents": [deepcopy(self.__favorites_confirm_flex_message(favorite_shop, favorites_confirm_message_template)) for favorite_shop in favorite_shops]
-                    }
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="對不起，我不了解您的問題"))
+        else:
+            # postback actions
+            action = event.postback.data.split('_')[0]
+            if action == 'favorite':
+                favorite_shops = self.shop.get_favorites(
+                    event, self.mongodb)
+                if len(favorite_shops) > 9:
                     line_bot_api.reply_message(
                         event.reply_token,
-                        FlexSendMessage(alt_text='確認刪除清單',
-                                        contents=favorites_confirm_messages)
-                    )
+                        TextSendMessage(text="最愛店家已達十筆，請先刪除店家再進行新增！"))
+                    return None
+                result = self.shop.add_into_my_favorites(
+                    event, self.mongodb)
+                if result:
+                    line_bot_api.reply_message(
+                        event.reply_token, TextSendMessage(text="加入成功"))
                 else:
-                    result = self.shop.delete_favorite_shop(
-                        event, self.mongodb)
-                    if result:
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text="已移除!"))
-                    else:
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text="找不到結果"))
+                    line_bot_api.reply_message(
+                        event.reply_token, TextSendMessage(text="已加入"))
+            elif action == 'deleteshop':
+                favorite_shops = self.shop.get_favorites(
+                    event, self.mongodb)
+
+                with open('./templates/favoritesComfirmMessage.json') as file:
+                    favorites_confirm_message_template = json.load(file)
+
+                favorites_confirm_messages = {
+                    "type": "carousel",
+                    "contents": [deepcopy(self.__favorites_confirm_flex_message(favorite_shop, favorites_confirm_message_template)) for favorite_shop in favorite_shops]
+                }
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    FlexSendMessage(alt_text='確認刪除清單',
+                                    contents=favorites_confirm_messages)
+                )
+            else:
+                result = self.shop.delete_favorite_shop(
+                    event, self.mongodb)
+                if result:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="已移除!"))
+                else:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="找不到結果"))
 
     def __flex_message(self, nearby_shop, flex_message_template):
         flex_message_template['body']['contents'][0]['text'] = nearby_shop['shop_name']
