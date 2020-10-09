@@ -1,4 +1,5 @@
 __pycache__
-venv
+ecachatbot-env
 .env
+.vscode
 coffeeShops.json

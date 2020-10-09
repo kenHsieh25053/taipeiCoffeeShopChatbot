@@ -25,8 +25,8 @@ class DevConfig():
     DEBUG = True
     TESTING = True
     DATABASE_URI = os.environ.get('DEV_DATABASE_URI')
-    CHANNEL_ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN')
-    CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET')
+    CHANNEL_ACCESS_TOKEN = os.environ.get('CHANNEL_ACCESS_TOKEN_DEV')
+    CHANNEL_SECRET = os.environ.get('CHANNEL_SECRET_DEV')
     MONGO_DB_URI = os.environ.get('DB_URI_DEV')
     DB_NAME = 'devdb'
     COLLECTIONS = ('coffeeshops', 'favorites')
