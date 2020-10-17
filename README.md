@@ -29,4 +29,4 @@
 ## 斗內
 * 如果喜歡我的作品，歡迎請我喝杯咖啡
 
-![This is a qrcode image.](/images/jkoqrcode.jpg "donation")
+![This is a qrcode image.](/images/jkoqrcode.jpg =250x250)
