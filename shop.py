@@ -1,5 +1,6 @@
 import math
 from copy import deepcopy
+import random
 
 
 class Shop():
@@ -26,6 +27,77 @@ class Shop():
 
     def get_shops(self, mongodb):
         return mongodb.get_data('shops')
+
+    def get_shops_by_topics(self, event, mongodb):
+        action = event.postback.data.split('_')[1]
+
+        if action == 'kensfavorates':
+            query = {
+                'shop_name': {'$in': [
+                    '鬧咖啡 NOW coffee',
+                    '這間咖啡',
+                    '515 Cafe&books'
+                ]}
+            }
+            shops = mongodb.get_data('shops', query)
+        elif action == 'nightcafe':
+            nightcafe = [
+                '鬧咖啡 NOW coffee',
+                '這間咖啡',
+                '515 Cafe&books',
+                '杯盃 PuiBui Cafe & Lounge',
+                'Cafe Kuroshio．咖啡黑潮',
+                '未央咖啡店',
+                '早秋咖啡 Cafe Macho',
+                'picnic野餐咖啡',
+                '自由51',
+                '2J CAFE',
+                '看電車咖啡館',
+                '391tpe',
+                '淡水長堤咖啡餐館',
+                '咖啡小自由',
+                'Congrats Café',
+                'Remember Me_記得我．Café',
+                '路上撿到一隻貓',
+                '黑露咖啡館 OLO Coffee Roasters',
+                'Uranium Cafe 鈾咖啡餐酒館'
+            ]
+            query = {
+                'shop_name': {'$in': random.choices(nightcafe, k=10)}
+            }
+            shops = mongodb.get_data('shops', query)
+        elif action == 'morningcafe':
+            query = {
+                'shop_name': {'$in': [
+                    '學校咖啡館 Ecole Cafe',
+                    '上島珈琲店(八德)',
+                    '在一起 One&Together',
+                    'Maven Coworking Cafe'
+                ]}
+            }
+            shops = mongodb.get_data('shops', query)
+        else:
+            spacious = [
+                '鬧咖啡 NOW coffee',
+                '515 Cafe&books',
+                '學校咖啡館 Ecole Cafe',
+                'ImPerfect Café',
+                '喜鵲咖啡',
+                '璐巴咖啡店',
+                '特有種商行',
+                '上島珈琲店(八德)',
+                'POLAR CAFE 西門旗艦店',
+                '391tpe',
+                '舒服生活 Truffles Living',
+                'CAFE RACO',
+                'Saturn Landing Turkish Coffee 登陸土星土耳其咖啡永康店',
+                '在一起 One&Together'
+            ]
+            query = {
+                'shop_name': {'$in': random.choices(spacious, k=10)}
+            }
+            shops = mongodb.get_data('shops', query)
+        return shops
 
     def get_nearby_shops_by_location(self, event, mongodb):
         nearby_locations = []

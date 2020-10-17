@@ -5,7 +5,8 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    TextMessage, TextSendMessage, FlexSendMessage
+    TextMessage, TextSendMessage, FlexSendMessage,
+    QuickReply, QuickReplyButton, MessageAction, LocationAction, PostbackAction
 )
 import json
 from copy import deepcopy
@@ -36,6 +37,10 @@ class Handler:
         if event.type == 'message':
             if event.message.type == 'location':
                 self.__handle_location_message(event, line_bot_api)
+            elif event.message.text == 'search':
+                self.__handle_quick_reply_action(event, line_bot_api)
+            elif event.message.text == 'topics':
+                print(event)
             elif event.message.text == 'favorites':
                 self.__handle_favorites_message(event, line_bot_api)
             else:
@@ -49,6 +54,9 @@ class Handler:
                 self.__handle_favorites_postback_action(event, line_bot_api)
             elif action == 'deleteshop':
                 self.__handle_delete_shop_postback_action(event, line_bot_api)
+            elif action == 'topics':
+                self.__handle_topics_postback_action(
+                    event, line_bot_api)
             else:
                 result = self.shop.delete_favorite_shop(
                     event, self.mongodb)
@@ -131,6 +139,41 @@ class Handler:
             FlexSendMessage(alt_text='確認刪除清單',
                             contents=favorites_confirm_messages)
         )
+
+    def __handle_quick_reply_action(self, event, line_bot_api):
+
+        quick_reply_messages = [
+            QuickReplyButton(action=LocationAction(
+                label='地點查詢', type='location')),
+            QuickReplyButton(action=PostbackAction(
+                label='小幫手愛店', display_text='小幫手愛店', data='topics_kensfavorites')),
+            QuickReplyButton(action=PostbackAction(
+                label='深夜咖啡館', display_text='深夜咖啡館', data='topics_nightcafe')),
+            QuickReplyButton(action=PostbackAction(
+                label='早鳥咖啡館', display_text='早鳥咖啡館', data='topics_morningcafe')),
+            QuickReplyButton(action=PostbackAction(
+                label='寬敞聚會咖啡廳', display_text='寬敞聚會咖啡廳', data='topics_spacious'))
+        ]
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='選擇地點查詢開啟google map, 或是選擇其他主題分類',
+                            quick_reply=QuickReply(items=quick_reply_messages))
+        )
+
+    def __handle_topics_postback_action(self, event, line_bot_api):
+        shops = self.shop.get_shops_by_topics(
+            event, self.mongodb)
+
+        with open('./templates/flexmessage.json') as file:
+            flex_message_template = json.load(file)
+        flex_messages = {
+            "type": "carousel",
+            "contents": [deepcopy(self.__insert_flex_message(shop, flex_message_template))
+                         for shop in shops]
+        }
+        line_bot_api.reply_message(
+            event.reply_token, FlexSendMessage(alt_text='店家資訊', contents=flex_messages))
 
     def __insert_flex_message(self, nearby_shop, flex_message_template):
         flex_message_template['body']['contents'][0]['text'] = nearby_shop['shop_name']
