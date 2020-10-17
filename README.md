@@ -3,10 +3,6 @@
 ## Line Id
 @510vrcxz
 
-## 畫面
-
-![image](https://github.com/taipeiCoffeeShopChatbot/blob/master/images/chatbot.png)
-
 ## 簡介
 蒐集台北市/新北市五十多間適合工作/讀書/聚會的不限時咖啡廳。以Line聊天機器人的方式跟使用者互動。
 
