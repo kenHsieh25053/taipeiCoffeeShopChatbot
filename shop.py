@@ -119,6 +119,7 @@ class Shop():
         user_id = event.source.user_id
         query_statement = {
             "$and": [{"user_id": user_id}, {"shop_id": shop_id}]}
+        print(query_statement)
         is_exist = mongodb.get_data('favorites', query_statement)
         if is_exist:
             return False
