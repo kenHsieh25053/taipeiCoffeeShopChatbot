@@ -5,7 +5,7 @@
 
 ## 畫面
 
-![image](https://github.com/taipeiCoffeeShopChatbot/images/chatbot.PNG)
+![image](https://github.com/kenHsieh25053/taipeiCoffeeShopChatbot/raw/master/images/chatbot.PNG)
 
 ## 簡介
 蒐集台北市/新北市五十多間適合工作/讀書/聚會的不限時咖啡廳。以Line聊天機器人的方式跟使用者互動。
