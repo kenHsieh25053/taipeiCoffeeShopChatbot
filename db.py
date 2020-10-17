@@ -19,11 +19,11 @@ class MongoDb():
         shops = db[self.COLLECTIONS[0]]
         shops.insert_many(data)
 
-    def get_data(self, from_table, *args):
+    def get_data(self, from_table, query=None, *args):
         db = self.client[self.DB_NAME]
         if from_table == 'shops':
             shops = db[self.COLLECTIONS[0]]
-            return [shop for shop in shops.find()]
+            return [shop for shop in shops.find(query)]
         else:
             favorites = db[self.COLLECTIONS[1]]
             for query in args:
