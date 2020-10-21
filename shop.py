@@ -31,7 +31,7 @@ class Shop():
     def get_shops_by_topics(self, event, mongodb):
         action = event.postback.data.split('_')[1]
 
-        if action == 'kensfavorates':
+        if action == 'kensfavorites':
             query = {
                 'shop_name': {'$in': [
                     '鬧咖啡 NOW coffee',
