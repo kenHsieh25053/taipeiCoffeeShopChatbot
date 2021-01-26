@@ -10,18 +10,14 @@ from linebot.models import (
 )
 import json
 from copy import deepcopy
-from shop import Shop
+from .shop import Shop
+
+# from run import CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET
+
+shop = Shop()
 
 
 class Handler:
-
-    shop = Shop()
-
-    def __init__(self, CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET, mongodb):
-        self.CHANNEL_ACCESS_TOKEN = CHANNEL_ACCESS_TOKEN
-        self.CHANNEL_SECRET = CHANNEL_SECRET
-        self.mongodb = mongodb
-        self.shop = Shop()
 
     def callback(self, signature, body):
         parser = WebhookParser(self.CHANNEL_SECRET)
