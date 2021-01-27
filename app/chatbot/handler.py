@@ -8,11 +8,14 @@ from linebot.models import (
     TextMessage, TextSendMessage, FlexSendMessage,
     QuickReply, QuickReplyButton, MessageAction, LocationAction, PostbackAction
 )
+
 import json
 from copy import deepcopy
+from flask import current_app as app
 from .shop import Shop
 
-# from run import CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET
+CHANNEL_ACCESS_TOKEN = app.config['CHANNEL_ACCESS_TOKEN']
+CHANNEL_SECRET = app.config['CHANNEL_SECRET']
 
 shop = Shop()
 
@@ -20,7 +23,7 @@ shop = Shop()
 class Handler:
 
     def callback(self, signature, body):
-        parser = WebhookParser(self.CHANNEL_SECRET)
+        parser = WebhookParser(CHANNEL_SECRET)
 
         try:
             events = parser.parse(body, signature)

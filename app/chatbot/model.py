@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 import uuid
 
-from . import db
+from .. import db
 
 
 class Shop(db.Model):
