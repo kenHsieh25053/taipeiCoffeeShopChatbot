@@ -1,4 +1,4 @@
-{
+FLEX_MESSAGE = {
     "type": "bubble",
     "body": {
         "type": "box",
@@ -9,11 +9,11 @@
                 "weight": "bold",
                 "size": "xxl",
                 "align": "center",
-                "wrap": true,
+                "wrap": True,
                 "contents": [
 
                 ]
-            },
+        },
             {
                 "type": "box",
                 "layout": "vertical",
@@ -31,20 +31,20 @@
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
                                 "size": "md",
                                 "color": "#666666",
                                 "flex": 5,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    },
+                },
                     {
                         "type": "box",
                         "layout": "baseline",
@@ -58,20 +58,20 @@
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
                                 "size": "md",
                                 "color": "#666666",
                                 "flex": 5,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    },
+                },
                     {
                         "type": "box",
                         "layout": "baseline",
@@ -84,7 +84,7 @@
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
@@ -94,9 +94,9 @@
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    },
+                },
                     {
                         "type": "box",
                         "layout": "baseline",
@@ -107,11 +107,11 @@
                                 "size": "md",
                                 "color": "#AAAAAA",
                                 "flex": 1,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
@@ -119,13 +119,13 @@
                                 "size": "md",
                                 "color": "#666666",
                                 "flex": 5,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    },
+                },
                     {
                         "type": "box",
                         "layout": "baseline",
@@ -135,24 +135,24 @@
                                 "size": "md",
                                 "color": "#AAAAAA",
                                 "flex": 1,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
                                 "size": "md",
                                 "color": "#666666",
                                 "flex": 5,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    },
+                },
                     {
                         "type": "box",
                         "layout": "baseline",
@@ -165,7 +165,7 @@
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
@@ -175,9 +175,9 @@
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    },
+                },
                     {
                         "type": "box",
                         "layout": "baseline",
@@ -190,22 +190,22 @@
                                 "contents": [
 
                                 ]
-                            },
+                        },
                             {
                                 "type": "text",
                                 "text": "",
                                 "size": "md",
                                 "color": "#666666",
                                 "flex": 5,
-                                "wrap": true,
+                                "wrap": True,
                                 "contents": [
 
                                 ]
-                            }
+                        }
                         ]
-                    }
+                }
                 ]
-            }
+        }
         ]
     },
     "footer": {

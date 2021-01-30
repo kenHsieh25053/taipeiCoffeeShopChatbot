@@ -4,7 +4,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 from .. import db
-from ..chatbot.model import Shop
+from ..chatbot.model import ShopModel
 
 
 admin_bp = Blueprint(
@@ -21,4 +21,4 @@ def admin():
 admin = Admin(app, name='Tpe coffee shop chatbot admin',
               template_mode='bootstrap4')
 
-admin.add_view(ModelView(Shop, db.session))
+admin.add_view(ModelView(ShopModel, db.session))

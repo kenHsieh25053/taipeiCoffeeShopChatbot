@@ -16,7 +16,6 @@ def endpoint():
 
     # get request body as text
     body = request.get_data(as_text=True)
-
     handler.callback(signature, body)
 
     return 'OK'

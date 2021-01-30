@@ -1,4 +1,4 @@
-{
+COMFIRM_MESSAGE = {
     "type": "bubble",
     "body": {
         "type": "box",
@@ -10,7 +10,7 @@
             "weight": "bold",
             "size": "xl",
             "align": "center",
-            "wrap": true,
+            "wrap": True,
             "contents": []
         }]
     },
