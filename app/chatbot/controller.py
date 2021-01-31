@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from .message import MessageHandler
 from .shop import Shop
-from .messagetemplates import favorites, flexmessage, comfirmMessage
+from .templates import favorites, flexmessage, comfirmMessage
 
 # For  webparser use
 CHANNEL_SECRET = app.config['CHANNEL_SECRET']

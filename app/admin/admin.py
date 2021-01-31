@@ -1,15 +1,14 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 from flask import current_app as app
 from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 
 from .. import db
-from ..chatbot.model import ShopModel
+from ..chatbot.model import ShopModel, FavoriteModel
+from .views import ShopAdmin, FavoriteAdmin
 
 
 admin_bp = Blueprint(
-    'admin_bp', __name__,
-    template_folder='templates'
+    'admin_bp', __name__
 )
 
 
@@ -18,7 +17,10 @@ def admin():
     pass
 
 
-admin = Admin(app, name='Tpe coffee shop chatbot admin',
+# admin setting
+admin = Admin(app, name='Chatbot Admin',
               template_mode='bootstrap4')
 
-admin.add_view(ModelView(ShopModel, db.session))
+# register models
+admin.add_view(ShopAdmin(ShopModel, db.session))
+admin.add_view(FavoriteAdmin(FavoriteModel, db.session))
