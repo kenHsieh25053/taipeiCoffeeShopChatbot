@@ -1,12 +1,12 @@
 from flask import Blueprint, request
 
-from .handler import Handler
+from .controller import Controller
 
 chatbot_bp = Blueprint(
     'chatbot_bp', __name__,
 )
 
-handler = Handler()
+controller = Controller()
 
 
 @chatbot_bp.route('/callback', methods=['POST'])
@@ -16,6 +16,6 @@ def endpoint():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    handler.callback(signature, body)
+    controller.callback(signature, body)
 
     return 'OK'

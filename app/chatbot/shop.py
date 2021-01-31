@@ -1,6 +1,5 @@
 import math
 import random
-import uuid
 from .model import ShopModel, FavoriteModel
 from app import db
 

@@ -1,4 +1,4 @@
-# Coffee Landing 你的台北不限時咖啡廳小幫手
+# Coffee Landing 你的台北不限時咖啡廳小幫手 ver.1.0.0
 
 ## Line Id
 @510vrcxz
