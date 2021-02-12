@@ -1,26 +1,17 @@
-from flask import Blueprint, render_template
-from flask import current_app as app
-from flask_admin import Admin
+from flask import Blueprint
+from flask_restful import Api
 
-from .. import db
-from ..chatbot.model import ShopModel, FavoriteModel
-from .views import ShopAdmin, FavoriteAdmin
+from .views import ShopList, ShopItem, FavoriteList, UserList, UserItem, Login, Logout
 
+admin_bp = Blueprint('admin_bp', __name__)
 
-admin_bp = Blueprint(
-    'admin_bp', __name__
-)
+api = Api(admin_bp)
 
-
-@admin_bp.route('/admin', methods=['GET'])
-def admin():
-    pass
-
-
-# admin setting
-admin = Admin(app, name='Chatbot Admin',
-              template_mode='bootstrap4')
-
-# register models
-admin.add_view(ShopAdmin(ShopModel, db.session))
-admin.add_view(FavoriteAdmin(FavoriteModel, db.session))
+# routers
+api.add_resource(Login, '/api/login')
+api.add_resource(Logout, '/api/logout')
+api.add_resource(ShopItem, '/api/shop/<shop_id>')
+api.add_resource(ShopList, '/api/shops')
+api.add_resource(FavoriteList, '/api/favorites')
+api.add_resource(UserItem, '/api/user/<user_id>')
+api.add_resource(UserList, '/api/users')
