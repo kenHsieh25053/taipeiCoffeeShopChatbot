@@ -1,4 +1,4 @@
-# Coffee Landing 你的台北不限時咖啡廳小幫手
+# Coffee Landing 你的台北不限時咖啡廳小幫手 ver.1.1.0
 
 ## Line Id
 @510vrcxz
@@ -24,6 +24,6 @@
     * 加入最愛：加入我的最愛清單(上限十筆)
 
 ## 斗內
-* 如果喜歡我的作品，歡迎請我喝杯咖啡
+* 如果喜歡我的作品，歡迎請我喝杯咖啡 (街口支付)
 
 <img src="./images/jkoqrcode.jpg" width="300" height="300">

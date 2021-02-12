@@ -1,4 +1,4 @@
-{
+FAVORITE_MESSAGE = {
     "type": "bubble",
     "body": {
         "type": "box",
@@ -10,7 +10,7 @@
             "weight": "bold",
             "size": "xl",
             "align": "center",
-            "wrap": true,
+            "wrap": True,
             "contents": []
         }]
     },
@@ -23,7 +23,7 @@
             "action": {
                 "type": "postback",
                 "label": "移除店家",
-                "data": ""
+                "data": "deleteshop"
             },
             "flex": 2,
             "color": "#D24444FF",
